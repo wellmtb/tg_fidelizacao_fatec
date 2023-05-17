@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="navBar">
+        <div id="logo">
+        <img src="./img/logo.jpeg" id="logo-img" alt="" srcset="">
+        <div id="nav-content"></div>
+        </div>
+    </div>
+    <div id="Content">
+        <div id="sideMenu">
+            <Ul id="menu">
+                <li><a href="/">Home</a></li></br>
+                <li><a href="/RegistrarVendas">Registrar Vendas</a></li></br>
+                <li><a href="/ConsultarPontos">Consultar Pontos</a></li></br>
+                <li><a href="/RegistrarUsuario">Registrar Usuário</a></li></br>
+                <li><a href="/config">Configurações</a></li></br>
+            </Ul>
+        </div>
+        <div id="content-application">
+            <div id="content">
+                <form action="/users" method="post">
+                    <h2>Cadastrar Usuário</h2><br><br>
+                    <label for="name">Nome:</label><br>
+                    <input type="text" id="name" name="name"><br>
+
+                    <label for="email">E-mail:</label><br>
+                    <input type="text" id="email" name="email" ><br><br>
+
+                    <label for="tel">Telefone:</label><br>
+                    <input type="tel" id="tel" name="tel" ><br><br>
+
+                    <label for="password">Senha:</label><br>
+                    <input type="password" id="password" name="password" ><br><br>
+
+                    <input type="submit" value="Enviar">
+                  </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

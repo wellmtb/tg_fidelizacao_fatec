@@ -1,12 +1,15 @@
 import express from 'express';
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
+import bodyParser from "body-parser";
 import { Database } from "./database.js"
 import { randomUUID } from 'crypto';
 
 const app = express();
 const port = 3333;
-
+//Body Parser
+app.use(bodyParser.urlencoded({extended:false}))
+app.use(bodyParser.json())
 const database = new Database
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -16,8 +19,30 @@ app.use(express.static(path.join(__dirname, 'views')));
 
 // main route
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views/index.html'));
+  res.sendFile(path.join(__dirname, 'views/home.html'))
 });
+
+app.get('/RegistrarUsuario', (req, res) => {
+  res
+    .sendFile(path.join(__dirname, 'views/RegistrarUser.html'))    
+});
+
+app.get('/ConsultarPontos', (req, res) => {
+  res
+    .sendFile(path.join(__dirname, 'views/ConsultarPontos.html'))
+});
+
+
+app.get('/RegistrarVendas', (req, res) => {
+  res
+    .sendFile(path.join(__dirname, 'views/RegistrarVendas.html'))
+});
+
+app.get('/config', (req, res) => {
+  res
+    .sendFile(path.join(__dirname, 'views/config.html'))
+});
+
 
 // Rotas de usuários
 app.get('/users', (req, res) => {
@@ -25,8 +50,11 @@ app.get('/users', (req, res) => {
   return res.end(JSON.stringify(users))
 });
 
+
+
 app.post('/users', (req, res) => {
-  const { name , email, tel, password} = req.body 
+  const { name , email, tel, password } = req.body;
+  console.log(req.body)
   /*
     TODO
     - Encriptar a senha do usuário antes de salvar no banco.
@@ -43,7 +71,8 @@ app.post('/users', (req, res) => {
   }
    
   database.insert('users', user) 
-  return res.writeHead(201).end() 
+  return res
+    .writeHead(201).end()
 });
 
 app.put('/users/:id', (req, res) => {
