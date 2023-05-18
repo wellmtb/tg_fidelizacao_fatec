@@ -12,6 +12,8 @@ app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
 const database = new Database
 
+
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 app.use(express.json());
@@ -178,7 +180,27 @@ app.get('/sales', (req, res) => {
 });
 
 app.post('/sales', (req, res) => {
-  console.log("TODO")
+  const { cpf, tel, valorVenda} = req.body;
+  console.log(req.body)
+  /*
+    TODO
+    - Encriptar a senha do usuário antes de salvar no banco.
+    - Verificar se o usuário já existe antes de criá-lo
+    - Validar dados obrigatorios
+  */
+  const sale = {  
+    id: randomUUID(),
+    cpf,
+    tel,
+    valorVenda,
+    Pontos :  Math.floor(valorVenda/10),
+    createdAt :  new Date().toLocaleString('pt-br')
+  }
+   console.log(sale)
+  database.insert('sales', sale) 
+  return res
+    .writeHead(201).end()
+
 });
 
 app.put('/sales/:id', (req, res) => {
@@ -188,6 +210,31 @@ app.put('/sales/:id', (req, res) => {
 app.delete('/sales/:id', (req, res) => {
   console.log("TODO")
 });
+
+
+/*
+Configurações de parametros do sistema
+
+*/ 
+app.post('/config', (req, res) => {
+  const { fatordepontos } = req.body;
+  console.log(req.body)
+  
+  const fator = {  
+    id : 1,
+    fatordepontos,
+    updateddAt :  new Date().toLocaleString('pt-br')
+  }
+   
+  database.insert('fatordepontos', fator) 
+  return res
+    .writeHead(201).end()
+
+});
+
+
+
+
 
 // start server
 app.listen(port, () => {
