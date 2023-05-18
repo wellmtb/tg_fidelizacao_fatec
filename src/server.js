@@ -37,7 +37,10 @@ app.get('/RegistrarVendas', (req, res) => {
   res
     .sendFile(path.join(__dirname, 'views/RegistrarVendas.html'))
 });
-
+app.get('/RegistrarCliente', (req, res) => {
+  res
+    .sendFile(path.join(__dirname, 'views/RegistrarCliente.html'))
+});
 app.get('/config', (req, res) => {
   res
     .sendFile(path.join(__dirname, 'views/config.html'))
@@ -108,22 +111,61 @@ app.delete('/users/:id', (req, res) => {
 
 // Rotas de clientes
 app.get('/customers', (req, res) => {
-  const customer = database.select('customer')
-    
+  const customers = database.select('customers');      
+  return res.end(JSON.stringify(customers))
+});
+
+app.post('/customers', (req, res) => {
+  const { name , cpf,  email, tel, endereco, num } = req.body;
+  console.log(req.body)
+  /*
+    TODO
+    - Encriptar a senha do usuário antes de salvar no banco.
+    - Verificar se o usuário já existe antes de criá-lo
+    - Validar dados obrigatorios
+  */
+  const customer = {  
+    id: randomUUID(),
+    name,
+    cpf,
+    email,
+    tel,
+    endereco,
+    num,
+    createdAt :  new Date().toLocaleString('pt-br')
+  }
+   
+  database.insert('customers', customer) 
   return res
-      .end(JSON.stringify(customer))
+    .writeHead(201).end()
+
 });
 
-app.post('/customer', (req, res) => {
-  console.log("TODO")
-});
+app.put('/customers/:id', (req, res) => {
+  const { id } = req.params;
+  const { name , cpf,  email, tel, endereco, num  } = req.body
 
-app.put('/customer/:id', (req, res) => {
-  console.log("TODO")
+  const customerFound = database.findById("customers", id);
+  if(!customerFound) {
+    return res.status(404).send("Usuário não encontrado")
+  }
+
+  const customerUpdated = {
+    ...customerFound,
+    name,
+    cpf,
+    email,
+    tel,
+    endereco,
+    num,
+  }
+  
+  database.update('customers', id, customerUpdated)
+  return res.writeHead(204).end() 
 });
 
 app.delete('/customer/:id', (req, res) => {
-  console.log("TODO")
+ console.log('TODO')
 });
 
 
