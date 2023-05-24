@@ -20,12 +20,26 @@ export class Database{
 
   }
 
-  select(table){
-  const data = this.#database[table] ?? []
-
-  return data
+  select(table, search) {
+    let data = this.#database[table] ?? [];
+  
+    if (Object.keys(search).length === 0) {
+      // Se o parâmetro de pesquisa estiver vazio, retorna todos os usuários
+      return data;
+    }
+  
+    data = data.filter(row => {
+      console.log('entrou no include');
+      return Object.entries(search).some(([key, value]) => {
+        const rowValue = row[key];
+        return typeof rowValue === 'string' && rowValue.includes(value) ||
+               Array.isArray(rowValue) && rowValue.includes(value);
+      });
+    });
+  
+    return data;
   }
-
+  
   findById(table, id){
   
     const rowIndex = this.#database[table].findIndex(row => row.id === id)

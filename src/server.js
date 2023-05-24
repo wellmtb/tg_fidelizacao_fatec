@@ -51,7 +51,16 @@ app.get('/config', (req, res) => {
 
 // Rotas de usuários
 app.get('/users', (req, res) => {
-  const users = database.select('users');      
+  const { search } = req.query;
+  
+  const searchData = search ? {
+    name: search,
+    email: search,
+    tel: search,
+    cpf: search
+  } : {};
+
+  const users = database.select('users', searchData);      
   return res.end(JSON.stringify(users))
 });
 
@@ -113,9 +122,19 @@ app.delete('/users/:id', (req, res) => {
 
 // Rotas de clientes
 app.get('/customers', (req, res) => {
-  const customers = database.select('customers');      
+  const { search } = req.query;
+  
+  const searchData = search ? {
+    name: search,
+    email: search,
+    tel: search,
+    cpf: search
+  } : {};
+
+  const customers = database.select('customers', searchData);      
   return res.end(JSON.stringify(customers))
 });
+
 
 app.post('/customers', (req, res) => {
   const { name , cpf,  email, tel, endereco, num } = req.body;
@@ -199,7 +218,8 @@ app.post('/sales', (req, res) => {
    console.log(sale)
   database.insert('sales', sale) 
   return res
-    .writeHead(201).end()
+    .writeHead(201)
+    .end()
 
 });
 
