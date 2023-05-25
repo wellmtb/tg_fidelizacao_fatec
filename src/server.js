@@ -192,15 +192,21 @@ app.delete('/customer/:id', (req, res) => {
 
 // Rotas de vendas
 app.get('/sales', (req, res) => {
-  const sales = database.select('sales')
-    
-  return res
-      .end(JSON.stringify(sales))
-});
+  const { search } = req.query;
+  
+  const searchData = search ? {
+    name: search,
+    email: search,
+    tel: search,
+    cpf: search
+  } : {};
 
+  const sales = database.select('sales', searchData);      
+  return res.end(JSON.stringify(sales))
+});
 app.post('/sales', (req, res) => {
-  const { cpf, tel, valorVenda} = req.body;
-  console.log(req.body)
+  const { name, email, cpf, tel, valorVenda} = req.body;
+  
   /*
     TODO
     - Encriptar a senha do usuário antes de salvar no banco.
@@ -209,6 +215,8 @@ app.post('/sales', (req, res) => {
   */
   const sale = {  
     id: randomUUID(),
+    name,
+    email,
     cpf,
     tel,
     valorVenda,

@@ -7,7 +7,6 @@
     <title>Document</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-
 </head>
 <body>
     <div id="navBar">
@@ -26,20 +25,47 @@
                 <li><a href="/config"><i class="fas fa-cog"></i> Configurações</a></li>
             </Ul>
         </div>
-        <form id="RegistrarVenda" onsubmit="enviarFormulario()" action="/sales" method="post">
-            <h1>Registrar Venda</h1><br><br>
-            <label for="cpf">CPF:</label><br>
-            <input type="text" id="cpf" name="cpf"><br>
+        <div id="content-application">
+            <div id="content">
+               <input type="text" id="searchInput" placeholder="Digite um nome, e-mail, telefone ou CPF">
+                <button id="searchButton">Pesquisar</button>
+  <table id="customerTable">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>E-mail</th>
+        <th>Telefone</th>
+        <th>CPF</th>
+        <th>Ação</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table></br>
 
-            <label for="tel">Telefone:</label><br>
-            <input type="tel" id="tel" name="tel" ><br><br>
-
-            <label for="valorVenda">Valor:</label><br>
-            <input type="number" id="valorVenda" name="valorVenda" ><br><br>
-
-            <input type="submit"  value="Enviar">
-          </form>
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Registrar Venda</h2>
+      <form action="/sales" method="POST" id="salesForm">
+        <label for="customerName">Nome do Cliente:</label>
+        <input type="text" id="name" disabled>
+        
+        <label for="customerEmail">E-mail do Cliente:</label>
+        <input type="text" id="email" disabled>
+        
+        <label for="customerCPF">CPF do Cliente:</label>
+        <input type="text" id="cpf" disabled>
+        
+        <label for="customerPhone">Telefone do Cliente:</label>
+        <input type="text" id="tel" disabled>
+        
+        <label for="valor">Valor da Compra:</label>
+        <input type="number" id="valorVenda">
+        
+        <button onsubmit="alert('Venda Registrada com sucesso !!')" type="submit">Registrar</button>
+      </form>
     </div>
-    <script src="script.js"></script>
+  </div>
+    <script src="./script.js"></script>
 </body>
 </html>

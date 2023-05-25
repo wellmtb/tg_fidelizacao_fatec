@@ -1,35 +1,31 @@
-// Obter elementos do DOM
-var searchInput = document.getElementById('searchInput');
-var searchButton = document.getElementById('searchButton');
 
-// Adicionar evento de teclado ao campo de entrada de texto
-searchInput.addEventListener('keydown', function(event) {
-  // Verificar se a tecla pressionada é a tecla "Enter"
-  if (event.key === 'Enter') {
-    // Executar a função de pesquisa ao pressionar a tecla "Enter"
-    searchCustomers();
-  }
-});
+function enviarFormulario(event) {
+  // Evitar o redirecionamento da página
+  event.preventDefault();
 
-// Adicionar evento de clique ao botão de pesquisa
-searchButton.addEventListener('click', searchCustomers);
-
-// Função de pesquisa de clientes
-function searchCustomers() {
-  var searchValue = searchInput.value;
-  // Lógica de pesquisa de clientes...
-  console.log('Realizando pesquisa:', searchValue);
+  // Enviar o formulário
   // ...
+
+  // Exibir mensagem de confirmação
+  alert('O formulário foi enviado com sucesso.');
+
+
+
+  // Limpar os campos do formulário
+  var formulario = document.getElementById('RegistrarVenda');
+  formulario.reset();
+    
+  var RegisCliente = document.getElementById('RegistrarCliente');
+  formulario.reset();
+
+
 }
 
 
 
-
-
-
-
-
-
+// Adicionar o evento de envio do formulário
+//var formulario = document.getElementById('RegistrarVenda');
+//formulario.addEventListener('submit', enviarFormulario);
 
 
 
@@ -84,31 +80,7 @@ function registerSale(e) {
     .then(data => {
       console.log('Venda registrada:', data);
       closeModal();
-      resetForm();// Obter elementos do DOM
-      var searchInput = document.getElementById('searchInput');
-      var searchButton = document.getElementById('searchButton');
-      
-      // Adicionar evento de teclado ao campo de entrada de texto
-      searchInput.addEventListener('keydown', function(event) {
-        // Verificar se a tecla pressionada é a tecla "Enter"
-        if (event.key === 'Enter') {
-          // Executar a função de pesquisa ao pressionar a tecla "Enter"
-          searchCustomers();
-        }
-      });
-      
-      // Adicionar evento de clique ao botão de pesquisa
-      searchButton.addEventListener('click', searchCustomers);
-      
-      // Função de pesquisa de clientes
-      function searchCustomers() {
-        var searchValue = searchInput.value;
-        // Lógica de pesquisa de clientes...
-        console.log('Realizando pesquisa:', searchValue);
-        // ...
-      }
-      // Simular um clique fora do modal para fechá-lo
-      document.dispatchEvent(new Event('click'));
+      resetForm();
     })
     .catch(error => {
       console.error('Erro ao registrar a venda:', error);
@@ -155,7 +127,6 @@ function displayCustomers(customers) {
 
     const actionButton = document.createElement('button');
     actionButton.textContent = 'Registrar Venda';
-    actionButton.id = 'buttonRegistrarVenda';
     actionButton.addEventListener('click', () => openModal(customer));
     actionButton.addEventListener('click', () => {
       salesForm.addEventListener('submit', registerSale);
@@ -163,7 +134,6 @@ function displayCustomers(customers) {
     actionCell.appendChild(actionButton);
   });
 }
-
 document.addEventListener('DOMContentLoaded', function() {
   // Selecionar o formulário e o modal
   var form = document.getElementById('myForm');

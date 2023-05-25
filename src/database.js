@@ -29,8 +29,7 @@ export class Database{
     }
   
     data = data.filter(row => {
-      console.log('entrou no include');
-      return Object.entries(search).some(([key, value]) => {
+        return Object.entries(search).some(([key, value]) => {
         const rowValue = row[key];
         return typeof rowValue === 'string' && rowValue.includes(value) ||
                Array.isArray(rowValue) && rowValue.includes(value);
