@@ -198,37 +198,45 @@ app.get('/sales', (req, res) => {
     name: search,
     email: search,
     tel: search,
-    cpf: search
+    cpf: search,
+    valorVenda: search,
+    pontos: search
   } : {};
 
   const sales = database.select('sales', searchData);      
   return res.end(JSON.stringify(sales))
 });
 app.post('/sales', (req, res) => {
-  const { name, email, cpf, tel, valorVenda} = req.body;
+  const { name, email, cpf, tel, valorVenda } = req.body;
   
   /*
     TODO
     - Encriptar a senha do usuário antes de salvar no banco.
     - Verificar se o usuário já existe antes de criá-lo
-    - Validar dados obrigatorios
+    - Validar dados obrigatórios
   */
+  
+  // Converter o valor da venda para um número de ponto flutuante (float)
+  const vendaFloat = parseFloat(valorVenda);
+
   const sale = {  
     id: randomUUID(),
     name,
     email,
     cpf,
     tel,
-    valorVenda,
-    Pontos :  Math.floor(valorVenda/10),
-    createdAt :  new Date().toLocaleString('pt-br')
-  }
-   console.log(sale)
-  database.insert('sales', sale) 
+    valorVenda: vendaFloat,
+    Pontos: Math.floor(vendaFloat / 10),
+    createdAt: new Date().toLocaleString('pt-br')
+  };
+  
+  console.log(sale);
+  
+  database.insert('sales', sale);
+  
   return res
     .writeHead(201)
-    .end()
-
+    .end();
 });
 
 app.put('/sales/:id', (req, res) => {

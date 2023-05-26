@@ -11,27 +11,48 @@
 <body>
     <div id="navBar">
         <div id="logo">
-        <img src="./img/logo.jpeg" id="logo-img" alt="" srcset="">
-        <div id="nav-content"></div>
+            <img src="./img/logo.jpeg" id="logo-img" alt="" srcset="">
+            <div id="nav-content"></div>
         </div>
     </div>
-    <div id="content">
+    <div id="Content">
         <div id="sideMenu">
-            <Ul id="menu">
+            <ul id="menu">
                 <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
                 <li><a href="/RegistrarVendas"><i class="fas fa-chart-line"></i> Registrar Vendas</a></li>
                 <li><a href="/ConsultarPontos"><i class="fas fa-search"></i> Consultar Pontos</a></li>
                 <li><a href="/RegistrarCliente"><i class="fas fa-user-plus"></i> Registrar Cliente</a></li>
                 <li><a href="/config"><i class="fas fa-cog"></i> Configurações</a></li>
-            </Ul>
+            </ul>
         </div>
-        <input type="text" id="searchInput" placeholder="Digite um nome, e-mail, telefone ou CPF">
-  <button id="searchButton">Pesquisar</button>
-  <ul id="userList"></ul>
+        <div id="content-application">
+            <div id="content">
+                <h2>Consultar Pontos de Clientes </h2></br></br>
 
-          
+                <input type="text" id="searchInput" placeholder="Digite um nome, e-mail, telefone ou CPF">
+                <button id="searchButton">Pesquisar</button>
+                <div id="consolidado">
+                   
+                   
+                </div>
+
+                <table id="customerTable">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Telefone</th>
+                            <th>CPF</th>
+                            <th >Total de Compras</th>
+                            <th >Total de Pontos</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
     </div>
-   
 
+    <script src="./script.js"></script>
 </body>
 </html>

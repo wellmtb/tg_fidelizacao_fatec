@@ -93,7 +93,7 @@ function resetForm() {
 
 function searchCustomers() {
   const searchInput = document.getElementById('searchInput').value;
-  const url = `http://localhost:3333/customers?search=${encodeURIComponent(searchInput)}`;
+  const url = `http://localhost:3333/sales?search=${encodeURIComponent(searchInput)}`;
   fetch(url)
     .then(response => response.json())
     .then(customers => displayCustomers(customers))

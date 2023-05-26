@@ -1,131 +1,44 @@
-// Obter elementos do DOM
-var searchInput = document.getElementById('searchInput');
-var searchButton = document.getElementById('searchButton');
+// Script.js
+let totalVendas = 0;
+let totalPontos = 0;
 
-// Adicionar evento de teclado ao campo de entrada de texto
-searchInput.addEventListener('keydown', function(event) {
-  // Verificar se a tecla pressionada é a tecla "Enter"
-  if (event.key === 'Enter') {
-    // Executar a função de pesquisa ao pressionar a tecla "Enter"
-    searchCustomers();
-  }
-});
-
-// Adicionar evento de clique ao botão de pesquisa
-searchButton.addEventListener('click', searchCustomers);
-
-// Função de pesquisa de clientes
-function searchCustomers() {
-  var searchValue = searchInput.value;
-  // Lógica de pesquisa de clientes...
-  console.log('Realizando pesquisa:', searchValue);
-  // ...
-}
-
-
-
-
-
-
-
-
-
-
-
-
-// script.js
 document.getElementById('searchButton').addEventListener('click', searchCustomers);
-
-// Modal
-const modal = document.getElementById('myModal');
-const salesForm = document.getElementById('salesForm');
-const closeButton = document.getElementsByClassName('close')[0];
-
-closeButton.addEventListener('click', closeModal);
-window.addEventListener('click', outsideClick);
-
-function closeModal() {
-  modal.style.display = 'none';
-  salesForm.removeEventListener('submit', registerSale);
-  resetForm();
-}
-
-function outsideClick(e) {
-  if (e.target == modal) {
-    closeModal();
-  }
-}
-
-function openModal(customer) {
-  document.getElementById('name').value = customer.name;
-  document.getElementById('email').value = customer.email;
-  document.getElementById('cpf').value = customer.cpf;
-  document.getElementById('tel').value = customer.tel;
-
-  modal.style.display = 'block';
-}
-
-function registerSale(e) {
-  e.preventDefault();
-  const name = document.getElementById('name').value;
-  const email = document.getElementById('email').value;
-  const cpf = document.getElementById('cpf').value;
-  const tel = document.getElementById('tel').value;
-  const valorVenda = document.getElementById('valorVenda').value;
-
-  fetch('http://localhost:3333/sales', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ name, email, cpf, tel, valorVenda })
-  })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Venda registrada:', data);
-      closeModal();
-      resetForm();// Obter elementos do DOM
-      var searchInput = document.getElementById('searchInput');
-      var searchButton = document.getElementById('searchButton');
-      
-      // Adicionar evento de teclado ao campo de entrada de texto
-      searchInput.addEventListener('keydown', function(event) {
-        // Verificar se a tecla pressionada é a tecla "Enter"
-        if (event.key === 'Enter') {
-          // Executar a função de pesquisa ao pressionar a tecla "Enter"
-          searchCustomers();
-        }
-      });
-      
-      // Adicionar evento de clique ao botão de pesquisa
-      searchButton.addEventListener('click', searchCustomers);
-      
-      // Função de pesquisa de clientes
-      function searchCustomers() {
-        var searchValue = searchInput.value;
-        // Lógica de pesquisa de clientes...
-        console.log('Realizando pesquisa:', searchValue);
-        // ...
-      }
-      // Simular um clique fora do modal para fechá-lo
-      document.dispatchEvent(new Event('click'));
-    })
-    .catch(error => {
-      console.error('Erro ao registrar a venda:', error);
-    });
-}
-
-function resetForm() {
-  salesForm.reset();
-}
 
 function searchCustomers() {
   const searchInput = document.getElementById('searchInput').value;
-  const url = `http://localhost:3333/customers?search=${encodeURIComponent(searchInput)}`;
+  const url = `http://localhost:3333/sales?search=${encodeURIComponent(searchInput)}`;
   fetch(url)
     .then(response => response.json())
-    .then(customers => displayCustomers(customers))
+    .then(customers => consolidateData(customers))
+    .then(consolidatedData => displayCustomers(consolidatedData))
     .catch(error => console.error('Erro na busca de clientes:', error));
+}
+
+function consolidateData(customers) {
+  return new Promise((resolve, reject) => {
+    totalVendas = 0;
+    totalPontos = 0;
+    const consolidatedData = customers.reduce((consolidated, current) => {
+      const existingUser = consolidated.find(user => user.email === current.email);
+      if (existingUser) {
+        existingUser.totalCompras += parseFloat(current.valorVenda);
+        existingUser.totalPontos += parseFloat(current.Pontos);
+      } else {
+        consolidated.push({
+          name: current.name,
+          email: current.email,
+          tel: current.tel,
+          cpf: current.cpf,
+          totalCompras: parseFloat(current.valorVenda),
+          totalPontos: parseFloat(current.Pontos)
+        });
+      }
+      totalVendas += parseFloat(current.valorVenda);
+      totalPontos += parseFloat(current.Pontos);
+      return consolidated;
+    }, []);
+    resolve(consolidatedData);
+  });
 }
 
 function displayCustomers(customers) {
@@ -135,7 +48,7 @@ function displayCustomers(customers) {
   if (customers.length === 0) {
     const tableRow = customerTableBody.insertRow();
     const tableCell = tableRow.insertCell();
-    tableCell.colSpan = 5;
+    tableCell.colSpan = 6;
     tableCell.textContent = 'Nenhum cliente encontrado.';
     return;
   }
@@ -146,43 +59,51 @@ function displayCustomers(customers) {
     const emailCell = tableRow.insertCell();
     const phoneCell = tableRow.insertCell();
     const cpfCell = tableRow.insertCell();
+    const totalSalesCell = tableRow.insertCell();
+    const totalPointsCell = tableRow.insertCell();
     const actionCell = tableRow.insertCell();
 
     nameCell.textContent = customer.name;
     emailCell.textContent = customer.email;
     phoneCell.textContent = customer.tel;
     cpfCell.textContent = customer.cpf;
+    totalSalesCell.textContent = formatCurrency(customer.totalCompras);
+    totalPointsCell.textContent = formatThousands(customer.totalPontos);
 
     const actionButton = document.createElement('button');
-    actionButton.textContent = 'Registrar Venda';
-    actionButton.id = 'buttonRegistrarVenda';
+    actionButton.textContent = 'Trocar Pontos';
     actionButton.addEventListener('click', () => openModal(customer));
     actionButton.addEventListener('click', () => {
       salesForm.addEventListener('submit', registerSale);
     });
     actionCell.appendChild(actionButton);
   });
+
+  // Exibir totais no consolidado
+  document.getElementById('totalVendas').textContent = `Total de Vendas: ${formatCurrency(totalVendas)}`;
+  document.getElementById('totalPontos').textContent = `Total de Pontos: ${formatThousands(totalPontos)}`;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  // Selecionar o formulário e o modal
-  var form = document.getElementById('myForm');
-  var modal = document.getElementById('myModal');
+function updatePoints(customerId, points) {
+  const customerTableBody = document.querySelector('#customerTable tbody');
+  const rows = customerTableBody.getElementsByTagName('tr');
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    const customerIdCell = row.cells[3]; // Assuming the customerId is in the fourth column (index 3)
+    if (customerIdCell.textContent === customerId) {
+      const pointsCell = row.cells[5]; // Assuming the points column is the sixth column (index 5)
+      pointsCell.textContent = formatThousands(points);
+      break;
+    }
+  }
+}
 
-  // Adicionar um evento de envio ao formulário
-  form.addEventListener('submit', function(event) {
-    event.preventDefault(); // Impedir o envio do formulário
+// Função para formatar um valor numérico como moeda (Reais)
+function formatCurrency(value) {
+  return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+}
 
-    // Obter os dados do formulário
-    var email = document.getElementById('email').value;
-    var phone = document.getElementById('phone').value;
-
-    // Enviar os dados para o servidor (substitua essa parte pelo seu código de requisição POST)
-
-    // Exibir o alerta com a mensagem de venda registrada
-    alert('Venda registrada com sucesso!');
-
-    // Fechar o modal
-    modal.style.display = 'none';
-  });
-});
+// Função para formatar um valor numérico com separação de milhares
+function formatThousands(value) {
+  return new Intl.NumberFormat('pt-BR').format(value);
+}
