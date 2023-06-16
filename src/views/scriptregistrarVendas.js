@@ -186,3 +186,8 @@ document.addEventListener('DOMContentLoaded', function() {
     modal.style.display = 'none';
   });
 });
+
+function logout() {
+  window.location.href = '/';
+  console.log('Logout realizado');
+}

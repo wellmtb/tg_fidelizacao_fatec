@@ -107,3 +107,10 @@ function formatCurrency(value) {
 function formatThousands(value) {
   return new Intl.NumberFormat('pt-BR').format(value);
 }
+
+
+function logout() {
+  window.location.href = '/';
+  console.log('Logout realizado');
+}
+

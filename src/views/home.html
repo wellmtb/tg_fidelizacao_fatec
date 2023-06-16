@@ -134,15 +134,29 @@
         .activity:hover span {
             font-size: 25px;
         }
+        .logout-icon {
+    position: absolute;
+    top: 10px;
+    right: 100px;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+  }
+
+
+
+
     </style>
 </head>
 <body>
     <div id="navBar">
         <div id="logo">
-            <img src="./img/logo.jpeg" id="logo-img" alt="" srcset="">
-            <div id="nav-content"></div>
+          <img src="./img/logo.jpeg" id="logo-img" alt="" srcset="">
+          <div id="nav-content">
+            <i class="fas fa-sign-out-alt logout-icon" onclick="logout()"> Sair</i>
+          </div>
         </div>
-    </div>
+      </div>
     <div id="content">
         <div id="content-application">
             <a href="/RegistrarCliente" class="activity">
@@ -164,5 +178,7 @@
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+
+    <script src="./script.js"></script>
 </body>
 </html>

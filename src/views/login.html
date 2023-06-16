@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tela de Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #e6eaf0, #c1c9d3);
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    
+    .container {
+      max-width: 400px;
+      padding: 20px;
+      text-align: center;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    img {
+      width: 200px;
+      height: auto;
+      margin-bottom: 20px;
+      border-radius: 100px;
+    }
+    
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+    }
+    
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="container"  >
+    <img src="./img/logo.jpeg" alt="Imagem de login">
+    <form>
+      <input type="text" id="usuario" placeholder="email">
+      <input type="password" id="senha" placeholder="password">
+      <button type="button" id="btnLogar">Entrar</button>
+    </form>
+    
+  </div>
+  <script src="valida.js"></script>
+</body>
+</html>

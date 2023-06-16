@@ -9,16 +9,18 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="navBar">
-        <div id="logo">
-        <img src="./img/logo.jpeg" id="logo-img" alt="" srcset="">
-        <div id="nav-content"></div>
-        </div>
+  <div id="navBar">
+    <div id="logo">
+      <img src="./img/logo.jpeg" id="logo-img" alt="" srcset="">
+      <div id="nav-content">
+        <i class="fas fa-sign-out-alt logout-icon" onclick="logout()"> Sair</i>
+      </div>
     </div>
+  </div>
     <div id="Content">
         <div id="sideMenu">
             <Ul id="menu">
-                <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="/home"><i class="fas fa-home"></i> Home</a></li>
                 <li><a href="/RegistrarVendas"><i class="fas fa-chart-line"></i> Registrar Vendas</a></li>
                 <li><a href="/ConsultarPontos"><i class="fas fa-search"></i> Consultar Pontos</a></li>
                 <li><a href="/RegistrarCliente"><i class="fas fa-user-plus"></i> Registrar Cliente</a></li>
@@ -27,6 +29,7 @@
         </div>
         <div id="content-application">
             <div id="content">
+              <h2>Registrar Vendas </h2></br></br>
                <input type="text" id="searchInput" placeholder="Digite um nome, e-mail, telefone ou CPF">
                 <button id="searchButton">Pesquisar</button>
   <table id="customerTable">
