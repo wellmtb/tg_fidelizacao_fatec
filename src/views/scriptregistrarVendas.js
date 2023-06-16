@@ -1,41 +1,3 @@
-// Obter elementos do DOM
-var searchInput = document.getElementById('searchInput');
-var searchButton = document.getElementById('searchButton');
-
-// Adicionar evento de teclado ao campo de entrada de texto
-searchInput.addEventListener('keydown', function(event) {
-  // Verificar se a tecla pressionada é a tecla "Enter"
-  if (event.key === 'Enter') {
-    // Executar a função de pesquisa ao pressionar a tecla "Enter"
-    searchCustomers();
-  }
-});
-
-// Adicionar evento de clique ao botão de pesquisa
-searchButton.addEventListener('click', searchCustomers);
-
-// Função de pesquisa de clientes
-function searchCustomers() {
-  var searchValue = searchInput.value;
-  // Lógica de pesquisa de clientes...
-  console.log('Realizando pesquisa:', searchValue);
-  // ...
-}
-
-
-
-
-
-
-
-
-
-
-
-
-// script.js
-document.getElementById('searchButton').addEventListener('click', searchCustomers);
-
 // Modal
 const modal = document.getElementById('myModal');
 const salesForm = document.getElementById('salesForm');
@@ -73,45 +35,25 @@ function registerSale(e) {
   const tel = document.getElementById('tel').value;
   const valorVenda = document.getElementById('valorVenda').value;
 
-  fetch('http://localhost:3333/sales', {
+  fetch('/sales', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({ name, email, cpf, tel, valorVenda })
   })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Venda registrada:', data);
-      closeModal();
-      resetForm();// Obter elementos do DOM
-      var searchInput = document.getElementById('searchInput');
-      var searchButton = document.getElementById('searchButton');
-      
-      // Adicionar evento de teclado ao campo de entrada de texto
-      searchInput.addEventListener('keydown', function(event) {
-        // Verificar se a tecla pressionada é a tecla "Enter"
-        if (event.key === 'Enter') {
-          // Executar a função de pesquisa ao pressionar a tecla "Enter"
-          searchCustomers();
-        }
-      });
-      
-      // Adicionar evento de clique ao botão de pesquisa
-      searchButton.addEventListener('click', searchCustomers);
-      
-      // Função de pesquisa de clientes
-      function searchCustomers() {
-        var searchValue = searchInput.value;
-        // Lógica de pesquisa de clientes...
-        console.log('Realizando pesquisa:', searchValue);
-        // ...
+    .then(response => {
+      if (response.status === 201) {
+        console.log('Venda registrada com sucesso!');
+        closeModal();
+        resetForm();
+      } else {
+        throw new Error('Erro ao registrar a venda');
       }
-      // Simular um clique fora do modal para fechá-lo
-      document.dispatchEvent(new Event('click'));
     })
     .catch(error => {
-      console.error('Erro ao registrar a venda:', error);
+      console.error(error);
+      alert('Erro ao registrar a venda. Por favor, tente novamente mais tarde.');
     });
 }
 
@@ -165,29 +107,14 @@ function displayCustomers(customers) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Selecionar o formulário e o modal
-  var form = document.getElementById('myForm');
-  var modal = document.getElementById('myModal');
-
-  // Adicionar um evento de envio ao formulário
-  form.addEventListener('submit', function(event) {
-    event.preventDefault(); // Impedir o envio do formulário
-
-    // Obter os dados do formulário
-    var email = document.getElementById('email').value;
-    var phone = document.getElementById('phone').value;
-
-    // Enviar os dados para o servidor (substitua essa parte pelo seu código de requisição POST)
-
-    // Exibir o alerta com a mensagem de venda registrada
-    alert('Venda registrada com sucesso!');
-
-    // Fechar o modal
-    modal.style.display = 'none';
-  });
+  const searchButton = document.getElementById('searchButton');
+  searchButton.addEventListener('click', searchCustomers);
 });
 
-function logout() {
-  window.location.href = '/';
-  console.log('Logout realizado');
-}
+searchInput.addEventListener('keydown', function(event) {
+  // Verificar se a tecla pressionada é a tecla "Enter"
+  if (event.key === 'Enter') {
+    // Executar a função de pesquisa ao pressionar a tecla "Enter"
+    searchCustomers();
+  }
+});
