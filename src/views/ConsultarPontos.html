@@ -51,10 +51,47 @@
                     </thead>
                     <tbody></tbody>
                 </table>
-            </div>
+                <div id="myModal" class="modal">
+                    <div class="modal-content">
+                      <span class="close">&times;</span>
+                      <h2>Registrar Venda</h2>
+                      <form action="/trocarPontos" method="POST" id="salesForm">
+                        <label for="name">Nome do Cliente:</label>
+                        <input type="text" id="name" name="name">
+                                          
+                        <label for="email">E-mail do Cliente:</label>
+                        <input type="text" id="email" name="email">
+                                          
+                        <label for="cpf">CPF do Cliente:</label>
+                        <input type="text" id="cpf" name="cpf">
+                                          
+                        <label for="tel">Telefone do Cliente:</label>
+                        <input type="text" id="tel" name="tel">
+                                          
+                        <div class="radio-container">
+                          <div class="radio-option">
+                            <input type="radio" name="option" id="option1" value="1">
+                            <label for="option1">Opção 1 - Utilizar 10 Pontos</label>
+                          </div>
+                          <div class="radio-option">
+                            <input type="radio" name="option" id="option2" value="2">
+                            <label for="option2">Opção 2 - Utilizar 20 Pontos</label>
+                          </div>
+                          <div class="radio-option">
+                            <input type="radio" name="option" id="option3" value="3">
+                            <label for="option3">Opção 3 - Utilizar 30 Pontos</label>
+                          </div>
+                          <div class="square-div"></div>
+                        </div>
+                  
+                                          
+                        <button type="submit">Trocar Pontos</button>
+                      </form>
+                    </div>
+                  </div>
         </div>
     </div>
-
+    <script src="./scriptregistrarPontos.js"></script>
     <script src="./script.js"></script>
 </body>
 </html>

@@ -21,49 +21,20 @@ app.use(express.static(path.join(__dirname, 'views')));
 
 
 
-// Middleware de autenticação
-const requireLogin = (req, res, next) => {
-  // Verificar se o usuário está logado (por exemplo, verificando se existe uma sessão ativa)
-  const isAuthenticated = true; // <-- Aqui você deve implementar a lógica de autenticação adequada
-
-  if (isAuthenticated) {
-    // Usuário autenticado, permitir prosseguir para a próxima rota
-    next();
-  } else {
-    // Usuário não autenticado, redirecionar para a página de login ou retornar um erro
-    res.redirect('/login'); // <-- Altere para a rota da página de login do seu aplicativo
-  }
-};
-
 // Rota de login
 app.post('/login', (req, res) => {
-  // Verificar o usuário e a senha no banco de dados
-  // ...
-
   if (user.password === password) {
-    // Senha válida, continuar com o login
-    // Definir uma sessão de autenticação, se aplicável
-    // ...
-
-    // Redirecionar para a rota desejada após o login
+    
     res.redirect('/home'); // <-- Altere para a rota desejada após o login
 
   } else {
-    // Senha inválida
+   
     res.status(401).send('Senha inválida');
   }
 });
 
 
-app.get('/outra-rota', requireLogin, (req, res) => {
-  // Essa rota só pode ser acessada se o usuário estiver logado
-  // ...
-});
 
-app.post('/outra-rota', requireLogin, (req, res) => {
-  // Essa rota só pode ser acessada se o usuário estiver logado
-  // ...
-});
 
 // main route
 
@@ -75,11 +46,11 @@ app.get('/',  (req, res) => {
 // Rotas protegidas
 
 
-app.get('/home', requireLogin, (req, res) => {
+app.get('/home',  (req, res) => {
   res.sendFile(path.join(__dirname, 'views/home.html'))
 });
 
-app.get('/RegistrarUsuario',requireLogin, (req, res) => {
+app.get('/RegistrarUsuario', (req, res) => {
   res
     .sendFile(path.join(__dirname, 'views/RegistrarUser.html'))    
 });
@@ -211,7 +182,10 @@ app.post('/customers', (req, res) => {
     createdAt :  new Date().toLocaleString('pt-br')
   }
    
-  database.insert('customers', customer) 
+  database.insert('customers', customer)
+
+
+
   return res
     .writeHead(201).end()
 
@@ -323,7 +297,38 @@ app.post('/config', (req, res) => {
 
 });
 
+app.post('/trocarPontos', (req, res) => {
+  const { name, email, cpf, tel, option } = req.body;
+  
+  /*
+    TODO
+    - Encriptar a senha do usuário antes de salvar no banco.
+    - Verificar se o usuário já existe antes de criá-lo
+    - Validar dados obrigatórios
+  */
+  
+  // Converter o valor da venda para um número de ponto flutuante (float)
+  const optionFloat = parseFloat(option);
 
+  const sale = {  
+    id: randomUUID(),
+    name,
+    email,
+    cpf,
+    tel,
+    valorVenda: 0,
+    Pontos: optionFloat * (- 10),
+    createdAt: new Date().toLocaleString('pt-br')
+  };
+  
+  console.log(sale);
+  
+  database.insert('sales', sale);
+  
+  return res
+    .writeHead(201)
+    .end();
+});
 
 
 
